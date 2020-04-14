@@ -1,17 +1,22 @@
+'''Preprocess documents and saves them in binary
+format using pickle
+'''
 import json
 import string
 import re
+import pickle
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-FILE_LIST_PATH = 'pregnancy_files.txt'
+FILE_LIST = 'pregnancy_files.txt'
+PREPROCESSED_DATA = 'document_content'
 
 
 def load_docs():
     '''
     :return: a dictionary doc_id, body_text of documents
     '''
-    file_list = open(FILE_LIST_PATH, 'r')
+    file_list = open(FILE_LIST, 'r')
     documents = {}
     for file in file_list:
         file = file.replace('\n', '')
@@ -27,6 +32,10 @@ def load_docs():
 
 
 def preprocess_docs(docs):
+    '''Common text preprocessing tasks
+    :param docs: raw docs
+    :return: preprocessed docs
+    '''
     stop_words = set(stopwords.words('english'))
     for doc_id, content in docs.items():
         # lower case
@@ -45,9 +54,27 @@ def preprocess_docs(docs):
     return docs
 
 
+def save_documents(docs):
+    '''Saves data in binary format
+    :param docs: pre-processed docs
+    '''
+    with open(PREPROCESSED_DATA, 'wb') as preprocessed_data:
+        pickle.dump(docs, preprocessed_data)
+
+
+def restore_documents():
+    '''Restores saved documents into memory
+    :return: a dictionary of docs and their data
+    '''
+    with open(PREPROCESSED_DATA, 'rb') as preprocessed_data:
+        docs = pickle.load(preprocessed_data)
+    return docs
+
+
 def main():
     documents = load_docs()
     documents = preprocess_docs(documents)
+    save_documents(documents)
 
 
 if __name__ == '__main__':
