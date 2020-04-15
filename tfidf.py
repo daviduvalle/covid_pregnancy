@@ -6,14 +6,17 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 class TfIdf:
     def __init__(self):
         self.documents = doc_loader.restore_documents()
+        self.vectorizer = TfidfVectorizer()
 
     def get_matrix(self):
         contents = []
         for id, content in self.documents.items():
             doc_content = ' '.join(content)
             contents.append(doc_content)
-        vectorizer = TfidfVectorizer()
-        return vectorizer.fit_transform(contents)
+        return self.vectorizer.fit_transform(contents)
+
+    def get_vectorizer(self):
+        return self.vectorizer
 
 
 if __name__ == '__main__':
