@@ -2,3 +2,5 @@
 .idea
 covid
 env
+__pycache__
+
