@@ -4,9 +4,11 @@ from tfidf import TfIdf
 from sklearn.cluster import KMeans
 
 # Used Silhouette analysis to pick the number of clusters
-CLUSTER_NUMBER = 100
+CLUSTER_NUMBER = 10
+
 
 class Clustering:
+
     def __init__(self):
         tfidf = TfIdf()
         self.matrix = tfidf.get_matrix()
@@ -20,7 +22,7 @@ class Clustering:
 
         for i in range(CLUSTER_NUMBER):
             print('Cluster {}'.format(i))
-            for index in sorted_centroids[i, :20]:
+            for index in sorted_centroids[i, :5]:
                 print(' %s' % feature_names[index], end='')
             print()
 

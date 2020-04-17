@@ -7,6 +7,7 @@ import re
 import pickle
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
 
 FILE_LIST = 'pregnancy_files.txt'
 PREPROCESSED_DATA = 'document_content'
@@ -37,6 +38,7 @@ def preprocess_docs(docs):
     :return: preprocessed docs
     '''
     stop_words = set(stopwords.words('english'))
+    lemmatizer = WordNetLemmatizer()
     for doc_id, content in docs.items():
         # lower case
         content = content.lower()
@@ -49,6 +51,8 @@ def preprocess_docs(docs):
         content = ' '.join(content.split())
         word_tokens = word_tokenize(content)
         filtered = [word for word in word_tokens if word not in stop_words]
+        filtered = [lemmatizer.lemmatize(word, pos='v') for word in filtered]
+
         docs[doc_id] = filtered
 
     return docs

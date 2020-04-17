@@ -3,7 +3,9 @@
 import doc_loader
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+
 class TfIdf:
+
     def __init__(self):
         self.documents = doc_loader.restore_documents()
         self.vectorizer = TfidfVectorizer()
