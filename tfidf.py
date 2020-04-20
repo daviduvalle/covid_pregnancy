@@ -12,10 +12,12 @@ class TfIdf:
 
     def get_matrix(self):
         contents = []
+        ids = []
         for id, content in self.documents.items():
             doc_content = ' '.join(content)
             contents.append(doc_content)
-        return self.vectorizer.fit_transform(contents)
+            ids.append(id)
+        return ids, self.vectorizer.fit_transform(contents)
 
     def get_vectorizer(self):
         return self.vectorizer
