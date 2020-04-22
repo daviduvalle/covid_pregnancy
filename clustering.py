@@ -2,9 +2,13 @@
 '''
 from tfidf import TfIdf
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib.colors as colors
+import numpy as np
 
-# Used an elbow plot to determine number of clusters
+# Used the elbow method to determine number of clusters
 CLUSTER_NUMBER = 17
 
 
@@ -37,23 +41,42 @@ class Clustering:
         ax.set_title('Sores by clusters')
         plt.show()
 
-
-    def kmeans(self):
+    def kmeans(self, num_keywords):
+        ''' Runs k-means and prints the top keywords per cluster
+        :param num_keywords: number of top keywords to print
+        :return centroids, labels, tf-idf features
+        '''
         feature_names = self.vectorizer.get_feature_names()
-        km = KMeans(n_clusters=CLUSTER_NUMBER, init='k-means++', max_iter=300, n_init=1, verbose=5)
+        km = KMeans(n_clusters=CLUSTER_NUMBER, init='k-means++', n_init=1, verbose=5)
         cluster_labels = km.fit_predict(self.matrix)
         sorted_centroids = km.cluster_centers_.argsort()[:, ::-1]
 
         for i in range(CLUSTER_NUMBER):
             print('Top words by cluster {}'.format(i))
-            for index in sorted_centroids[i, :5]:
+            for index in sorted_centroids[i, :num_keywords]:
                 print(' %s' % feature_names[index], end='')
             print()
+
+        return sorted_centroids, cluster_labels, feature_names
+
+    def plot(self, labels, feature_names):
+        dense = self.matrix.todense()
+        pca = PCA(n_components=2).fit_transform(dense)
+        norm = plt.Normalize(np.min(labels), np.max(labels))
+        map = cm.ScalarMappable(norm=norm, cmap=cm.hot)
+        output = map.to_rgba(labels)
+        plt.scatter(pca[:,0], pca[:,1], c=output)
+        plt.show()
+
+
+
+
 
 
 if __name__ == '__main__':
     clustering = Clustering()
-    clustering.kmeans()
+    centroids, labels, feature_names = clustering.kmeans(3)
+    clustering.plot(labels, feature_names)
 
 
 
