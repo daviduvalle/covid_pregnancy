@@ -4,9 +4,9 @@ from tfidf import TfIdf
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-import matplotlib.colors as colors
 import numpy as np
+import plotly.io as pio
+import plotly.express as px
 
 # Used the elbow method to determine number of clusters
 CLUSTER_NUMBER = 17
@@ -15,6 +15,7 @@ CLUSTER_NUMBER = 17
 class Clustering:
 
     def __init__(self):
+        pio.renderers.default = 'browser'
         tfidf = TfIdf()
         self.ids, self.matrix = tfidf.get_matrix()
         self.vectorizer = tfidf.get_vectorizer()
@@ -61,23 +62,23 @@ class Clustering:
 
     def plot(self, labels, feature_names):
         dense = self.matrix.todense()
-        pca = PCA(n_components=2).fit_transform(dense)
+        pca = PCA(n_components=3).fit_transform(dense)
+        norm = plt.Normalize(np.min(labels), np.max(labels))
+        normalized = norm(labels)
+        fig = px.scatter_3d(x=pca[:,0], y=pca[:,1], z=pca[:,2], color=normalized)
+        fig.show()
+
+        '''
         norm = plt.Normalize(np.min(labels), np.max(labels))
         map = cm.ScalarMappable(norm=norm, cmap=cm.hot)
         output = map.to_rgba(labels)
         plt.scatter(pca[:,0], pca[:,1], c=output)
         plt.show()
-
-
-
-
+        '''
 
 
 if __name__ == '__main__':
     clustering = Clustering()
     centroids, labels, feature_names = clustering.kmeans(3)
     clustering.plot(labels, feature_names)
-
-
-
 
