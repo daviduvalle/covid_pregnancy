@@ -12,6 +12,13 @@ import plotly.express as px
 CLUSTER_NUMBER = 17
 
 
+class ClusterDoc:
+    def __init__(self, id, description, docs):
+        self.id = id;
+        self.description = description
+        self.docs = docs
+
+
 class Clustering:
 
     def __init__(self):
@@ -63,29 +70,55 @@ class Clustering:
         fig.write_html(html_path)
         print('Clustering visualization using k-means saved as: {}'.format(html_path))
 
-    def save_file(self, centroids, labels, feature_names, file_path):
-        print('Top 10 words by cluster')
+    def topn_words(self, centroids, feature_names, n):
+        ''' Returns the top N keywords by cluster
+        :param centroids: identified by kmeans
+        :param feature_names: maps back to keywords
+        :param n: number of words to describe a cluster
+        :return: a dictionary of clusters and top N keywords
+        '''
+        cluster_topwords = {}
+        for i in range(CLUSTER_NUMBER):
+            cluster_keywords = ''
+            for index in centroids[i, :n]:
+                cluster_keywords += feature_names[index] + ' '
+            cluster_topwords[i] = cluster_keywords
+        return cluster_topwords
+
+    def print_top_words(self, cluster_topwords):
+        for cluster_id, words in cluster_topwords.items():
+            print('{}: {}'.format(cluster_id, words))
+
+    def print_docs_by_cluster(self, cluster_doc):
+        for cluster in sorted(cluster_doc, key=lambda k :len(cluster_doc[k]), reverse=True):
+            print('{}, docs: {}'.format(cluster, len(cluster_doc[cluster])))
+
+    def cluster_to_doc(self, labels):
         cluster_to_doc = {}
         for i in range(CLUSTER_NUMBER):
-            print('cluster #:{}'.format(i))
-            cluster_keywords = ''
-            for index in centroids[i, :10]:
-                cluster_keywords += feature_names[index] + ' '
-            print(cluster_keywords)
-            print('labels {}'.format(labels.size))
             cluster_to_doc[i] = list()
             for e in range(0, labels.size):
                 if labels[e] == i:
                     cluster_to_doc[i].append(self.ids[e])
 
-        print('Docs by cluster')
-        for i in range(CLUSTER_NUMBER):
-            print('Cluster {} docs {}'.format(i, len(cluster_to_doc[i])))
+        return cluster_to_doc
+
+    def save_file(self, cluster_doc, cluster_keyword, file_path):
+        output_list = []
+        for cluster_id in sorted(cluster_doc, key=lambda k: len(cluster_doc[k]), reverse=True):
+            doc = ClusterDoc(cluster_id, cluster_keyword[cluster_id], cluster_doc[cluster_id])
+            output_list.append(doc)
+
+        print('Final list to write {}'.format(len(output_list)))
 
 
 if __name__ == '__main__':
     clustering = Clustering()
     centroids, labels, feature_names = clustering.kmeans()
-    clustering.plot(labels, 'output.html')
-    clustering.save_file(centroids, labels, feature_names, 'clusters.json')
+    clustering.plot(labels, 'view.html')
+    cluster_keyword = clustering.topn_words(centroids, feature_names, 5)
+    cluster_doc = clustering.cluster_to_doc(labels)
+    clustering.print_top_words(cluster_keyword)
+    clustering.print_docs_by_cluster(cluster_doc)
+    clustering.save_file(cluster_doc, cluster_keyword, 'output.json')
 
