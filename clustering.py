@@ -55,7 +55,7 @@ class Clustering:
         :return centroids, labels, tf-idf features
         '''
         feature_names = self.vectorizer.get_feature_names()
-        km = KMeans(n_clusters=CLUSTER_NUMBER, init='k-means++', n_init=1, verbose=5)
+        km = KMeans(n_clusters=CLUSTER_NUMBER, init='k-means++', random_state=5, n_init=1, verbose=5)
         cluster_labels = km.fit_predict(self.matrix)
         sorted_centroids = km.cluster_centers_.argsort()[:, ::-1]
 
