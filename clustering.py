@@ -3,6 +3,7 @@
 from tfidf import TfIdf
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+import constants
 import matplotlib.pyplot as plt
 import numpy as np
 import plotly.io as pio
@@ -115,7 +116,7 @@ class Clustering:
 if __name__ == '__main__':
     clustering = Clustering()
     centroids, labels, feature_names = clustering.kmeans()
-    clustering.plot(labels, 'view.html')
+    clustering.plot(labels, constants.VISUALIZATION)
     cluster_keyword = clustering.topn_words(centroids, feature_names, 5)
     cluster_doc = clustering.cluster_to_doc(labels)
     clustering.print_top_words(cluster_keyword)

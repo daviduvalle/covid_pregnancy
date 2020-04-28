@@ -5,19 +5,19 @@ import json
 import string
 import re
 import pickle
+import constants
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
-FILE_LIST = 'pregnancy_files.txt'
-PREPROCESSED_DATA = 'document_content'
+PREPROCESSED_DATA = 'document_content.pickle'
 
 
 def load_docs():
     '''
     :return: a dictionary doc_id, body_text of documents
     '''
-    file_list = open(FILE_LIST, 'r')
+    file_list = open(constants.FOUND_DOCS, 'r')
     documents = {}
     for file in file_list:
         file = file.replace('\n', '')
@@ -62,7 +62,7 @@ def save_documents(docs):
     '''Saves data in binary format
     :param docs: pre-processed docs
     '''
-    with open(PREPROCESSED_DATA, 'wb') as preprocessed_data:
+    with open(constants.PREPROCESSED_DOCS, 'wb') as preprocessed_data:
         pickle.dump(docs, preprocessed_data)
 
 
@@ -70,7 +70,7 @@ def restore_documents():
     '''Restores saved documents into memory
     :return: a dictionary of docs and their data
     '''
-    with open(PREPROCESSED_DATA, 'rb') as preprocessed_data:
+    with open(constants.PREPROCESSED_DOCS, 'rb') as preprocessed_data:
         docs = pickle.load(preprocessed_data)
     return docs
 

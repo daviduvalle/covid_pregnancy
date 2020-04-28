@@ -2,6 +2,7 @@
 for other programs to locate documents
 '''
 import os
+import constants
 
 BASE_DIR = 'covid'
 search_words = set()
@@ -33,7 +34,10 @@ def save_files(files):
     fast retrieval
     :param files: list of found files
     '''
-    output = open('pregnancy_files.txt', 'w')
+    if not os.path.exists(constants.OUTPUT_PATH):
+        os.mkdir(constants.OUTPUT_PATH)
+
+    output = open(constants.FOUND_DOCS, 'w')
     for file in files:
         output.write(file+'\n')
     output.close()
