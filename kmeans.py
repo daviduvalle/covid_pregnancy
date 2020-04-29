@@ -1,26 +1,26 @@
 '''Clusters documents with different algorithms
 '''
 from tfidf import TfIdf
-from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 import constants
+import sklearn.cluster
 import matplotlib.pyplot as plt
 import numpy as np
 import plotly.io as pio
 import plotly.express as px
 
 # Used the elbow method to determine number of clusters
-CLUSTER_NUMBER = 17
+CLUSTERS = 17
 
 
 class ClusterDoc:
     def __init__(self, id, description, docs):
-        self.id = id;
+        self.id = id
         self.description = description
         self.docs = docs
 
 
-class Clustering:
+class KMeans:
 
     def __init__(self):
         pio.renderers.default = 'browser'
@@ -37,7 +37,7 @@ class Clustering:
 
         for cluster_size in max:
             print('Running cluster %s' % cluster_size)
-            kmeans = KMeans(n_clusters=cluster_size, init='k-means++', n_init=1, verbose=5)
+            kmeans = sklearn.cluster.KMeans(n_clusters=cluster_size, init='k-means++', n_init=1, verbose=5)
             inertia = kmeans.fit(self.matrix).inertia_
             score.append(inertia)
 
@@ -50,13 +50,13 @@ class Clustering:
         ax.set_title('Sores by clusters')
         plt.show()
 
-    def kmeans(self):
+    def run(self):
         ''' Runs k-means and prints the top keywords per cluster
         :param num_keywords: number of top keywords to print
         :return centroids, labels, tf-idf features
         '''
         feature_names = self.vectorizer.get_feature_names()
-        km = KMeans(n_clusters=CLUSTER_NUMBER, init='k-means++', random_state=5, n_init=1, verbose=5)
+        km = sklearn.cluster.KMeans(n_clusters=CLUSTERS, init='k-means++', random_state=5, n_init=1, verbose=5)
         cluster_labels = km.fit_predict(self.matrix)
         sorted_centroids = km.cluster_centers_.argsort()[:, ::-1]
 
@@ -79,7 +79,7 @@ class Clustering:
         :return: a dictionary of clusters and top N keywords
         '''
         cluster_topwords = {}
-        for i in range(CLUSTER_NUMBER):
+        for i in range(CLUSTERS):
             cluster_keywords = ''
             for index in centroids[i, :n]:
                 cluster_keywords += feature_names[index] + ' '
@@ -96,7 +96,7 @@ class Clustering:
 
     def cluster_to_doc(self, labels):
         cluster_to_doc = {}
-        for i in range(CLUSTER_NUMBER):
+        for i in range(CLUSTERS):
             cluster_to_doc[i] = list()
             for e in range(0, labels.size):
                 if labels[e] == i:
@@ -114,12 +114,12 @@ class Clustering:
 
 
 if __name__ == '__main__':
-    clustering = Clustering()
-    centroids, labels, feature_names = clustering.kmeans()
-    clustering.plot(labels, constants.VISUALIZATION)
-    cluster_keyword = clustering.topn_words(centroids, feature_names, 5)
-    cluster_doc = clustering.cluster_to_doc(labels)
-    clustering.print_top_words(cluster_keyword)
-    clustering.print_docs_by_cluster(cluster_doc)
-    clustering.save_file(cluster_doc, cluster_keyword, 'output.json')
+    kmeans = KMeans()
+    centroids, labels, feature_names = kmeans.run()
+    kmeans.plot(labels, constants.VISUALIZATION)
+    cluster_keyword = kmeans.topn_words(centroids, feature_names, 5)
+    cluster_doc = kmeans.cluster_to_doc(labels)
+    kmeans.print_top_words(cluster_keyword)
+    kmeans.print_docs_by_cluster(cluster_doc)
+    kmeans.save_file(cluster_doc, cluster_keyword, 'output.json')
 
