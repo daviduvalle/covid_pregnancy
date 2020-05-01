@@ -3,12 +3,17 @@ import doc_loader as dl
 import constants
 from kmeans import KMeans
 import sys
+import os
 
 
 def main(args):
     run_kmeans_only = False
     if len(args) > 0 and args[0] == 'algorithm_only':
         print('Running algorithm only, assuming preprocessed files exist')
+        if not os.path.exists(constants.OUTPUT_PATH):
+            raise Exception('Output directory needs to exists, try running again without flags')
+        if not os.path.exists(constants.PREPROCESSED_DOCS):
+            raise Exception('Preprocessed docs pickly file needs to exists, try running again without flags')
         run_kmeans_only = True
 
     if not run_kmeans_only:
