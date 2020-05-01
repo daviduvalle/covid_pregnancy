@@ -25,7 +25,7 @@ class KMeans:
     def __init__(self):
         pio.renderers.default = 'browser'
         tfidf = TfIdf()
-        self.ids, self.matrix = tfidf.get_matrix()
+        self.ids, self.titles, self.matrix = tfidf.get_matrix()
         self.vectorizer = tfidf.get_vectorizer()
 
     def elbow(self):
