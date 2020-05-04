@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import plotly.io as pio
 import plotly.express as px
+import json
 
 # Used the elbow method to determine number of clusters
 CLUSTERS = 17
@@ -100,7 +101,7 @@ class KMeans:
             cluster_to_doc[i] = list()
             for e in range(0, labels.size):
                 if labels[e] == i:
-                    cluster_to_doc[i].append(self.ids[e])
+                    cluster_to_doc[i].append((self.ids[e], self.titles[e]))
 
         return cluster_to_doc
 
@@ -110,6 +111,7 @@ class KMeans:
             doc = ClusterDoc(cluster_id, cluster_keyword[cluster_id], cluster_doc[cluster_id])
             output_list.append(doc)
 
+        #output_json = json.dumps(output_list)
         print('Final list to write {}'.format(len(output_list)))
 
 
