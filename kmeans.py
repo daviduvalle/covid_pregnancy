@@ -9,16 +9,10 @@ import numpy as np
 import plotly.io as pio
 import plotly.express as px
 import json
+import constants
 
 # Used the elbow method to determine number of clusters
 CLUSTERS = 17
-
-
-class ClusterDoc:
-    def __init__(self, id, description, docs):
-        self.id = id
-        self.description = description
-        self.docs = docs
 
 
 class KMeans:
@@ -105,14 +99,13 @@ class KMeans:
 
         return cluster_to_doc
 
-    def save_file(self, cluster_doc, cluster_keyword, file_path):
-        output_list = []
+    def save_file(self, cluster_doc, cluster_keyword):
+        output_dict = {}
         for cluster_id in sorted(cluster_doc, key=lambda k: len(cluster_doc[k]), reverse=True):
-            doc = ClusterDoc(cluster_id, cluster_keyword[cluster_id], cluster_doc[cluster_id])
-            output_list.append(doc)
+            output_dict[cluster_id] = (cluster_keyword[cluster_id], cluster_doc[cluster_id])
 
-        #output_json = json.dumps(output_list)
-        print('Final list to write {}'.format(len(output_list)))
+        with open(constants.FINAL_REPORT, 'w') as file:
+            json.dump(output_dict, file)
 
 
 if __name__ == '__main__':
@@ -123,5 +116,5 @@ if __name__ == '__main__':
     cluster_doc = kmeans.cluster_to_doc(labels)
     kmeans.print_top_words(cluster_keyword)
     kmeans.print_docs_by_cluster(cluster_doc)
-    kmeans.save_file(cluster_doc, cluster_keyword, 'output.json')
+    kmeans.save_file(cluster_doc, cluster_keyword)
 

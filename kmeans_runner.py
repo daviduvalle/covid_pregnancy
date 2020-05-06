@@ -36,7 +36,8 @@ def main(args):
     cluster_doc = kmeans.cluster_to_doc(labels)
     kmeans.print_top_words(cluster_keyword)
     kmeans.print_docs_by_cluster(cluster_doc)
-    kmeans.save_file(cluster_doc, cluster_keyword, 'output.json')
+    print('Writing report at: %s' % constants.FINAL_REPORT)
+    kmeans.save_file(cluster_doc, cluster_keyword)
 
 
 if __name__ == '__main__':
