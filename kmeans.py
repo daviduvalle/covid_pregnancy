@@ -2,10 +2,8 @@
 '''
 from tfidf import TfIdf
 from sklearn.decomposition import PCA
-import constants
 import sklearn.cluster
 import matplotlib.pyplot as plt
-import numpy as np
 import plotly.io as pio
 import plotly.express as px
 import json
@@ -60,9 +58,7 @@ class KMeans:
     def plot(self, labels, html_path):
         dense = self.matrix.todense()
         pca = PCA(n_components=3).fit_transform(dense)
-        norm = plt.Normalize(np.min(labels), np.max(labels))
-        normalized = norm(labels)
-        fig = px.scatter_3d(x=pca[:,0], y=pca[:,1], z=pca[:,2], color=normalized)
+        fig = px.scatter_3d(x=pca[:,0], y=pca[:,1], z=pca[:,2], color=labels)
         fig.write_html(html_path)
         print('Clustering visualization using k-means saved as: {}'.format(html_path))
 
