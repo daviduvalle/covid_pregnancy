@@ -49,7 +49,10 @@ class KMeans:
         :return centroids, labels, tf-idf features
         '''
         feature_names = self.vectorizer.get_feature_names()
-        km = sklearn.cluster.KMeans(n_clusters=CLUSTERS, init='k-means++', random_state=5, n_init=1, verbose=5)
+        km = sklearn.cluster.KMeans(n_clusters=CLUSTERS,
+                                    init='k-means++',
+                                    random_state=constants.RANDOM_SEED,
+                                    n_init=1, verbose=5)
         cluster_labels = km.fit_predict(self.matrix)
         sorted_centroids = km.cluster_centers_.argsort()[:, ::-1]
 
@@ -96,12 +99,15 @@ class KMeans:
         return cluster_to_doc
 
     def save_file(self, cluster_doc, cluster_keyword):
-        output_dict = {}
+        output = []
         for cluster_id in sorted(cluster_doc, key=lambda k: len(cluster_doc[k]), reverse=True):
-            output_dict[cluster_id] = (cluster_keyword[cluster_id], cluster_doc[cluster_id])
+            cluster_data = {}
+            cluster_data['cluster_id'] = cluster_id
+            cluster_data['docs'] = (cluster_keyword[cluster_id], cluster_doc[cluster_id])
+            output.append(cluster_data)
 
         with open(constants.FINAL_REPORT, 'w') as file:
-            json.dump(output_dict, file)
+            json.dump(output, file)
 
 
 if __name__ == '__main__':
