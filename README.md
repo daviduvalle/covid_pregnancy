@@ -34,7 +34,9 @@ The problem is modeled as an unsupervised learning task with the goal to automat
     pneumonia children case lus study, 24
     ceacam cea ceacams genes domain, 13
     
-A JSON report containing a mapping between clusters and document titles can be found ![here](output/final_report.json)
+A JSON report containing a mapping between clusters and document titles can be found [here](output/final_report.json)
+
+The data didn't contain links to publication so titles need to be searched on a search engine to access the full documents.
     
 ## Conclusions
 
