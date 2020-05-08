@@ -14,6 +14,28 @@ The problem is modeled as an unsupervised learning task with the goal to automat
 
 ![](output/clustering_3d.png)
 
+17 clusters were identified using the elbow method. These are the clusters sorted (descending) by number of documents
+
+    use study sample sequence case, 395
+    cells mice virus use infection, 289
+    patients study respiratory children rsv, 138
+    cells mice cd il microglia, 103
+    health public countries disease diseases, 90 
+    piglets pig pdcov pedv pcv, 77
+    zikv cells denv mice infection, 71
+    pedv pig piglets strain sow, 70 
+    influenza sari patients hn pandemic, 67 
+    et al cells study use, 61 
+    vaccine vaccines nanoparticles use virus, 57 
+    ifn prrsv cells ifns type, 46
+    calve herd calf dairy brsv, 45
+    bat species alecto sequence use, 30 
+    igy ha brv use pnsia, 28
+    pneumonia children case lus study, 24
+    ceacam cea ceacams genes domain, 13
+    
+A JSON report containing a mapping between clusters and document titles can be found ![here](output/final_report.json)
+    
 ## Conclusions
 
 
