@@ -40,7 +40,8 @@ The data didn't contain links to publication so titles need to be searched on a 
     
 ## Conclusions
 
-
-
+* Only 1,604 documents contained pregnancy related keywords out of 33,375. This is only 4.8% of all the docs in the dataset.
+* Not all the research papers in the dataset are specific to Covid-19. This is a sample from the cluster "cells mice virus use infection", title: **A Replicating Modified Vaccinia Tiantan Strain Expressing an Avian-Derived Influenza H5N1 Hemagglutinin Induce Broadly Neutralizing Antibodies and Cross-Clade Protective Immunity in Mice** 
+* The clusters with least documents contain research regarding pneumonia in children and a cell adhesion molecule [CEACAM1](https://en.wikipedia.org/wiki/CEACAM1) that seems to modulate of innate immune responses. Probably both good research areas.
 
 
