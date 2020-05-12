@@ -44,4 +44,14 @@ The data didn't contain links to publication so titles need to be searched on a 
 * Not all the research papers in the dataset are specific to Covid-19. This is a sample from the cluster "cells mice virus use infection", title: **A Replicating Modified Vaccinia Tiantan Strain Expressing an Avian-Derived Influenza H5N1 Hemagglutinin Induce Broadly Neutralizing Antibodies and Cross-Clade Protective Immunity in Mice** 
 * The clusters with least documents contain research regarding pneumonia in children and a cell adhesion molecule [CEACAM1](https://en.wikipedia.org/wiki/CEACAM1) that seems to modulate innate immune responses. Probably both good research areas.
 
-
+## How to run
+    # Make sure you are using python3.6 or later
+    git clone https://github.com/daviduvalle/covid_pregnancy.git 
+    cd covid_pregnancy 
+    # Create a virtual env and switch to it
+    virtualenv -p python3 env
+    source env/bin/activate
+    pip install -r requirements.txt
+    # Make sure the dataset is unzipped inside the covid/ directory
+    python3 kmeans_runner.py
+    
