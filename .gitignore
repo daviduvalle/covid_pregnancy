@@ -1,7 +1,6 @@
 .DS_Store
 .idea
-covid
 env
-output
+output/**
 __pycache__
 
