@@ -2,7 +2,7 @@
 
 This project tries to tackle the [Kaggle COVID-19](https://www.kaggle.com/allen-institute-for-ai/CORD-19-research-challenge/tasks?taskId=558) Open Research Dataset Challenge task regarding risk factors. In particular, tries to shed light on the impact in pregnant women and neonates.
 
-The problem is modeled as an unsupervised learning task with the goal to automatically find clusters of similar documents. Tf-idf and the K-means algorithm is used for cluster identification.
+The problem is modeled as an unsupervised learning task with the goal to automatically find clusters of similar documents. Tf-idf is used for featurization and the K-means algorithm is used for cluster identification.
 
 ## Methodology
 1. Each document's title and body are filtered looking for specific keywords such as *pregnant*, *pregnancy*, *neonatal*
